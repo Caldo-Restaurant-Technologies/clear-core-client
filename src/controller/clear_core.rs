@@ -1,6 +1,6 @@
 use std::{
     fmt,
-    io::{BufReader, Read, Write},
+    io::{BufRead, BufReader,  Write},
     net::{TcpStream, ToSocketAddrs},
 };
 
@@ -57,10 +57,10 @@ impl Controller {
     }
 
     pub fn send_recv(&mut self, msg: &[u8]) -> std::io::Result<Vec<u8>> {
-        let mut reader = BufReader::new(self.stream.try_clone().unwrap());
+        let mut reader = BufReader::new(&mut self.stream);
         let mut response = Vec::with_capacity(BUFFER_LENGTH);
-        self.stream.write_all(msg)?;
-        reader.read_to_end(&mut response)?;
+        reader.get_mut().write_all(msg)?;
+        reader.read_until(b'\0',&mut response)?;
         Ok(response)
     }
 }

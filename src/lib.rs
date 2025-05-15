@@ -5,7 +5,7 @@ use std::{
 
 pub mod controller;
 
-const BUFFER_LENGTH: usize = 100;
+const BUFFER_LENGTH: usize = 101;
 
 pub trait SendRecv {
     fn send_recv(mut stream: TcpStream, buffer: &[u8]) -> Result<Vec<u8>> {
